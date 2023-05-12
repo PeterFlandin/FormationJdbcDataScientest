@@ -5,8 +5,9 @@ import Entity.Livre;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
-public class Main2 {
+public class Main3 {
 
     private static final String url=  "jdbc:mysql://localhost:3306/monlivre?allowPublicKeyRetrieval=true&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=Europe/Paris";
     private static final String password= "246810";
@@ -15,17 +16,19 @@ public class Main2 {
 private static final String Query_get_Livre = "SELECT * FROM livre";
 
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args){
 
-        try (Connection conn = DriverManager.getConnection(url, username, password)) {
-            System.out.println("connecté à la base de donnée !!!");
-            Statement statement = conn.createStatement();
+        try (Connection conn = DriverManager.getConnection(url, username, password); PreparedStatement preparedStatement = conn.prepareStatement("SELECT id_livre, titre, prix FROM livre where titre like ? ");
 
-            ResultSet resultSet = statement.executeQuery(Query_get_Livre);
+             Scanner sc = new Scanner(System.in)){
 
+            System.out.println("Donner le nom ?");
+            String lettre = sc.nextLine();
+
+            preparedStatement.setString(1, lettre );
+            ResultSet resultSet = preparedStatement.executeQuery();
 
             List<Livre> livreList = new ArrayList<Livre>();
-
 
             while (resultSet.next()) {
                 Livre livre1 = new Livre();
@@ -37,9 +40,14 @@ private static final String Query_get_Livre = "SELECT * FROM livre";
                 livreList.stream().forEach(System.out::println);
             }
 
+            if(resultSet != null) {
+                resultSet.close();
+            }
 
         } catch (SQLException e) {
             System.out.println("error : " + e.getMessage());
+        } finally {
+
         }
 
     }
