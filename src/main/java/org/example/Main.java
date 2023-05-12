@@ -1,8 +1,6 @@
 package org.example;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class Main {
 
@@ -10,18 +8,23 @@ public class Main {
     private static final String password= "246810";
     private static final String username = "app_test";
 
-
+private static final String Query_get_Livre = "SELECT * FROM livre";
 
 
     public static void main(String[] args) throws SQLException{
 
+try (Connection conn = DriverManager.getConnection(url,username, password)){
+    System.out.println("connecté à la base de donnée !!!");
+    Statement statement = conn.createStatement();
 
-        Connection conn = DriverManager.getConnection(url, username, password);
+    ResultSet resultSet = statement.executeQuery(Query_get_Livre);
 
+} catch (SQLException e) {
+    System.out.println("error : " + e.getMessage());
+}
+    }
 
-        System.out.println("connecté à la base de donnée !!!");
     }
 
 
 
-}
