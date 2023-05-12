@@ -2,7 +2,7 @@ package org.example;
 
 import java.sql.*;
 
-public class Main {
+public class Main2 {
 
     private static final String url=  "jdbc:mysql://localhost:3306/monlivre?allowPublicKeyRetrieval=true&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=Europe/Paris";
     private static final String password= "246810";
